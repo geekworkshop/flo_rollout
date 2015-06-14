@@ -1,0 +1,69 @@
+<style>
+  .container {
+    background-color: #FFFFFF;
+    padding: 32px 0;
+  }
+
+  header {
+    padding-top: 6px;
+  }
+
+  header h1 {
+    font-size: 32px;
+    line-height: 50px;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 940px;
+  }
+
+  table {
+    border-collapse: collapse;
+    border: 1px solid #CCCCCC;
+    border-spacing: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    width: 940px;
+  }
+  th {
+    background-color: #E5E5E5;
+  }
+  th, td {
+    border: 1px solid #CCCCCC;
+    padding: 2px 5px;
+    text-align: center;
+  }
+</style>
+<header>
+  <%= image_tag asset_path("logo.png"), width: 300, height: 100 %>
+  <h1>Only able to enable feature for admin/non admin</h1>
+</header>
+<div class="container">
+  <table>
+    <tr>
+      <th>Feature</th>
+      <th>Groups</th>
+      <th>Action</th>
+    </tr>
+    <% @features.each do |feature| %>
+      <tr>
+        <td><%= feature.name %></td>
+        <td><%= feature.groups %></td>
+        <td>
+          <%= form_tag features_path do %>
+            <%= hidden_field_tag 'feature_sym', feature.name %>
+            <% if $rollout.active? feature.name.to_sym, current_user %>
+              <%= submit_tag "Deactivate" %>
+            <% else %>
+              <%= submit_tag "Activate" %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
